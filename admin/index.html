@@ -105,6 +105,13 @@
                 }
             })
 
+            // 2. 设置退出按钮功能
+            $('.logout').on('click',function () {
+                // 3. 删除token
+                localStorage.removeItem('bigToken');
+                // 4. 跳转到登录页面
+                window.location.href = './login.html';
+            })
 
             
 
