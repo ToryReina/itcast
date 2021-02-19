@@ -65,6 +65,9 @@
       <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
+
+    <!-- 导入https接口管理文件 -->
+    <script src="./libs/https.js"></script>
     <script>
       // 入口函数
       $(function () {
@@ -86,7 +89,8 @@
           // 4. 发起ajax请求
           $.ajax({
             type: "post",
-            url: "http://localhost:8080/api/v1/admin/user/login",
+            // url: "http://localhost:8080/api/v1/admin/user/login",
+            url: BigNew.user_login,
             data: {
               username: username,
               password: password,
