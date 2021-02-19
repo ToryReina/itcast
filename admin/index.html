@@ -20,7 +20,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;李思思</span>
+            <span>欢迎&nbsp;&nbsp;<i style="font-style: normal;">李思思</i></span>
             <b>管理员</b>
         </div>
         <!-- 左侧导航栏 -->
@@ -54,5 +54,46 @@
 
         </div>
     </div>
+    <script>
+        // 入口函数
+        $(function () {
+            // 回顾,原生发请求,携带token
+            // 1. 声明xhr对象
+            // let xhr = new XMLHttpRequest();
+            // // 2. 调用open方法,设置请求方式以及请求地址
+            // xhr.open('get','http://localhost:8080/api/v1/admin/user/info');
+            // // 3. 设置请求头,携带token数据
+            // xhr.setRequestHeader('Authorization',localStorage.getItem('bigToken'));
+            // // 4. 设置onload回调函数
+            // xhr.onload = function () {
+            //     console.log(xhr.response);
+            // }
+            // // 5. 调用send方法
+            // xhr.send();
+            // ---------
+
+            // 1. 发送请求获得用户的信息
+            // 利用jq代码发送请求,携带token
+            $.ajax({
+                type:'get',
+                url:'http://localhost:8080/api/v1/admin/user/info',
+                // 设置请求头,携带token
+                headers: {
+                    'Authorization': localStorage.getItem('bigToken')
+                },
+                success: function (backData) {
+                    console.log(backData);
+                    // 2. 修改对应标签的内容
+                    $('.user_info img').attr('src',backData.data.userPic);
+                    $('.user_info span i').text(backData.data.nickname);
+                    $('.user_center_link img').attr('src',backData.data.userPic);
+                    
+                }
+            })
+
+            
+
+        })
+    </script>
 </body>
 </html>

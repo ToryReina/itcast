@@ -98,6 +98,8 @@
                 $("#myModal .modal-body>p").text("登录成功!");
                 $("#myModal").modal();
                 // 当模态框隐藏的时候执行的事件
+                // 保存token令牌
+                localStorage.setItem('bigToken',backData.token)
                 $("#myModal").on("hidden.bs.modal", function (e) {
                   // 跳转页面
                   window.location.href = "./index.html";
