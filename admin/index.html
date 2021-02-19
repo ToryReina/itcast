@@ -72,15 +72,29 @@
             // xhr.send();
             // ---------
 
+            // // 思考: 登录之后的每个请求,都必须要携带token令牌,那就代表每次写ajax请求的时候,都必须要设置一次请求头,非常麻烦
+            // // 能否一次设置,终身使用呢?
+            // // 利用ajaxSetup()方法,全局设置ajax请求默认值
+            // $.ajaxSetup({
+            //     // 发送ajax请求之前运行的函数
+            //     beforeSend: function (xhr) {
+            //         // 提前设置好全局请求头参数
+            //         xhr.setRequestHeader('Authorization',localStorage.getItem('bigToken'));
+            //     }
+            // })
+
+            // 再思考,每个页面都需要发送ajax请求,那也就是说有多少个页面就需要设置多少次setup方法,很烦.
+            // 所以,我们应该把这个方法,放到一个共用的文件中
+
             // 1. 发送请求获得用户的信息
             // 利用jq代码发送请求,携带token
             $.ajax({
                 type:'get',
                 url:'http://localhost:8080/api/v1/admin/user/info',
                 // 设置请求头,携带token
-                headers: {
-                    'Authorization': localStorage.getItem('bigToken')
-                },
+                // headers: {
+                //     'Authorization': localStorage.getItem('bigToken')
+                // },
                 success: function (backData) {
                     console.log(backData);
                     // 2. 修改对应标签的内容
@@ -90,6 +104,7 @@
                     
                 }
             })
+
 
             
 
