@@ -110,6 +110,7 @@
         $(function () {
             // 1. 发送ajax请求,获得所有的文章数据
             // 再利用模板引擎设置页面结构
+           function getData() {
             $.ajax({
                 type: "get",
                 url: BigNew.category_list,
@@ -122,6 +123,8 @@
                     }
                 }
             });
+           }
+           getData();
 
             // 2. 判断模态框是新增分类按钮,还是编辑按钮
             $('#myModal').on('show.bs.modal', function (e) {
@@ -133,6 +136,44 @@
                 } else {
                     $('#myModalLabel').text('编辑分类')
                     $('.addOrEdit').text('编辑');
+                }
+            })
+
+            // 3. 完成新增按钮以及编辑按钮功能
+            $('.addOrEdit').on('click',function () {
+                // 判断是新增还是编辑
+                if ($(this).text() == '新增') {
+                    // 获得用户输入新增信息
+                    let name = $('#recipient-name').val().trim();
+                    let slug = $('#message-text').val().trim();
+                    // 非空判断
+                    if (name == '' || slug == '') {
+                        alert('不能为空');
+                        return;
+                    }
+                    // 发起新增ajax请求
+                    $.ajax({
+                        type:'post',
+                        url: BigNew.category_add,
+                        data: {
+                            name:name,
+                            slug:slug
+                        },
+                        success: function (backData) {
+                            if (backData.code == 201) {
+                                // 新增成功之后清空模态框并隐藏
+                                $('#recipient-name').val('');
+                                $('#message-text').val('');
+                                $('#myModal').modal('hide');
+
+                                // 再次发起文章类别数据请求,渲染页面
+                                getData();
+                            }
+                        }
+                    })
+
+                } else {
+                    
                 }
             })
         });
