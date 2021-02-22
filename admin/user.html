@@ -68,6 +68,30 @@
             </form>
         </div>
     </div>
+    <script src="./libs/https.js"></script>
+
+    <script>
+        $(function(){
+            // 1. 发送ajax请求,获得用户信息
+            $.ajax({
+                type: "get",
+                url: BigNew.user_detail,
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        console.log(backData);
+                        // $('.nickname').val(backData.data.nickname);
+                        // $('.username').val(backData.data.username);
+                        // $('.password').val(backData.data.password);
+                        // $('.email').val(backData.data.email);
+                        for(let key in backData.data){
+                            $('.'+key).val(backData.data[key]);
+                        }
+                        $('.user_pic').attr('src',backData.data.userPic)
+                    }
+                }
+            });
+        })
+    </script>
 </body>
 
 </html>
