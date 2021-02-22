@@ -32,7 +32,7 @@
                 <a href="./article_list.html" target="main_frame"><i class="iconfont icon-icon-article"></i><span>文章管理</span><b
                         class="iconfont icon-arrowdownl"></b></a>
             </div>
-            <ul class="level02" style="display: block;">
+            <ul class="level02" >
                 <li>
                     <a href="./article_list.html" target="main_frame"><i class="iconfont icon-previewright"></i><span>文章列表</span></a>
                 </li>
@@ -125,6 +125,22 @@
                 // 4. 跳转到登录页面
                 window.location.href = "./login.html";
             });
+
+            $('.level01').on('click',function(){
+                $(this).addClass('active').siblings('div').removeClass('active');
+                if ($(this).index() == 1) {
+                    $(this).find('.icon-arrowdownl').toggleClass('rotate0');
+                    $('.level02').slideToggle();
+                    $('.level02 li').eq(0).click();
+                    if (!$(this).find('.icon-arrowdownl').hasClass('rotate0')) {
+                        $('.level02 li').removeClass('active');
+                    }
+                }
+            })
+
+            $('.level02 li').on('click',function () {
+                $(this).addClass('active').siblings().removeClass('active');
+            })
         });
     </script>
 </body>
