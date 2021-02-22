@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>文章列表</title>
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/iconfont.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
     <!-- 引入模板引擎js文件 -->
@@ -18,9 +18,7 @@
 
 <body>
     <div class="container-fluid">
-        <div class="common_title">
-            文章类别管理
-        </div>
+        <div class="common_title">文章类别管理</div>
         <div class="container-fluid common_con">
             <table class="table table-striped table-bordered table-hover mp20 category_table">
                 <thead>
@@ -35,7 +33,7 @@
                         <td>奇趣事</td>
                         <td>funny</td>
                         <td class="text-center">
-                            <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
+                            <a href="javascript:void(0)" data-toggle="modal" class="btn btn-info btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
                         </td>
                     </tr>
@@ -51,5 +49,38 @@
             </table>
         </div>
     </div>
+    <!-- 设置模板引擎结构 -->
+    <script id="categoryList" type="text/html">
+        {{each data v}}
+        <tr>
+            <td>{{v.name}}</td>
+            <td>{{v.slug}}</td>
+            <td class="text-center">
+                <a href="javascript:void(0)" data-id="{{v.id}}" data-toggle="modal" class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:void(0)" data-id="{{v.id}}" class="btn btn-danger btn-xs">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
+    <script src="./libs/https.js"></script>
+    <script>
+        $(function(){
+            // 1. 发送ajax请求,获得所有的文章数据
+            // 再利用模板引擎设置页面结构
+            $.ajax({
+                type:'get',
+                url:BigNew.category_list,
+                success: function (backData) {
+                    if (backData.code == 200) {
+                        // 利用模板引擎渲染结构
+                        let str = template('categoryList',backData);
+                        // 将结构添加到tbody中
+                        $('tbody').html(str);
+                    }
+                }
+            })
+        })
+    </script>
+</body>
 
 </html>
