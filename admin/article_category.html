@@ -61,18 +61,19 @@
                 </div>
                 <div class="modal-body">
                     <form>
+                        <input type="hidden" id="slug_id" name='id'>
                         <div class="form-group">
                             <label for="recipient-name" class="control-label">分类名称:</label>
-                            <input type="text" class="form-control" id="recipient-name" />
+                            <input type="text" name="name" class="form-control" id="recipient-name" />
                         </div>
                         <div class="form-group">
                             <label for="message-text" class="control-label">分类别名:</label>
-                            <input type="text" class="form-control" id="message-text"></input>
+                            <input type="text" name="slug" class="form-control" id="message-text"></input>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" id="cancel" class="btn btn-default" data-dismiss="modal">
                         取消
                     </button>
                     <button type="button" class="btn btn-primary addOrEdit">Send message</button>
@@ -88,18 +89,16 @@
         <td>{{v.name}}</td>
         <td>{{v.slug}}</td>
         <td class="text-center">
-          <a
-            href="javascript:void(0)"
+          <button
             data-id="{{v.id}}"
             data-toggle="modal" data-target="#myModal"
             class="btn btn-info btn-xs"
-            >编辑</a
+            >编辑</button
           >
-          <a
-            href="javascript:void(0)"
+          <button
             data-id="{{v.id}}"
             class="btn btn-danger btn-xs"
-            >删除</a
+            >删除</button
           >
         </td>
       </tr>
@@ -136,6 +135,11 @@
                 } else {
                     $('#myModalLabel').text('编辑分类')
                     $('.addOrEdit').text('编辑');
+
+                    // 获得当前点击按钮所在的td内容
+                    $('#recipient-name').val($(e.relatedTarget).parent().prev().prev().text());
+                    $('#message-text').val($(e.relatedTarget).parent().prev().text());
+                    $('#slug_id').val($(e.relatedTarget).attr('data-id'));
                 }
             })
 
@@ -143,6 +147,7 @@
             $('.addOrEdit').on('click',function () {
                 // 判断是新增还是编辑
                 if ($(this).text() == '新增') {
+                    // 新增功能
                     // 获得用户输入新增信息
                     let name = $('#recipient-name').val().trim();
                     let slug = $('#message-text').val().trim();
@@ -173,9 +178,48 @@
                     })
 
                 } else {
-                    
+                    // 编辑功能
+                     // 获得用户输入新增信息
+                     let name = $('#recipient-name').val().trim();
+                     let slug = $('#message-text').val().trim();
+                    // 获得隐藏域的id值
+                    let slug_id = $('#slug_id').val();
+                    // ----------
+                    let res = $('form').serialize();
+                    console.log(res);
+                    // ----------
+
+                    // 非空判断
+                    if (name == '' || slug == '') {
+                        alert('不能为空');
+                        return;
+                    }
+                    // 发起ajax请求,修改文章类别
+                    $.ajax({
+                        type:'post',
+                        url: BigNew.category_edit,
+                        // data: {
+                        //     id: slug_id,
+                        //     name:name,
+                        //     slug:slug
+                        // },
+                        data:res,
+                        success: function (backData) {
+                            if (backData.code == 200) {
+                                // 修改成功之后,清空模态框,隐藏模态框,重新加载数据
+                                $('#recipient-name').val('');
+                                $('#message-text').val('');
+                                $('#myModal').modal('hide');
+
+                                // 再次发起文章类别数据请求,渲染页面
+                                getData();
+                            }
+                        }
+                    })
                 }
             })
+
+            
         });
     </script>
 </body>
