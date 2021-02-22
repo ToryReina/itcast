@@ -90,6 +90,15 @@
                     }
                 }
             });
+
+            // 2. 设置上传图片预览功能
+            $('#exampleInputFile').on('change',function () {
+                let file = this.files[0];
+                let url = URL.createObjectURL(file);
+                // 将生成的地址,设置给img标签
+                $('.user_pic').attr('src',url);
+
+            })
         })
     </script>
 </body>
