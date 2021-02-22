@@ -96,7 +96,8 @@
             >编辑</button
           >
           <button
-            data-id="{{v.id}}"
+            data-id="{{v.id}}" 
+            id='del'
             class="btn btn-danger btn-xs"
             >删除</button
           >
@@ -219,7 +220,32 @@
                 }
             })
 
-            
+            // 4. 设置取消按钮功能
+            $('#cancel').on('click',function () {
+                // 新增成功之后清空模态框
+                $('#recipient-name').val('');
+                $('#message-text').val('');
+            })
+
+            // 5. 删除文章类别
+            $('tbody').on('click','#del',function () {
+                // 获得点击按钮的id
+                let del_id = $(this).attr('data-id');
+                // 发起ajax请求
+                $.ajax({
+                    type:'post',
+                    url:BigNew.category_delete,
+                    data:{
+                        id:del_id
+                    },success: function (backData) {
+                        if (backData.code == 200) {
+                            alert('删除成功');
+                            // 删除成功之后,重新加载数据
+                            getData();
+                        }
+                    }
+                })
+            })
         });
     </script>
 </body>
